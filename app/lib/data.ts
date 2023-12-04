@@ -18,12 +18,9 @@ export async function fetchRevenue() {
     // Artificially delay a response for demo purposes.
     // Don't do this in production :)
 
-    // console.log('Fetching revenue data...');
     // await new Promise((resolve) => setTimeout(resolve, 3000));
 
     const data = await sql<Revenue>`SELECT * FROM revenue`;
-
-    // console.log('Data fetch completed after 3 seconds.');
 
     return data.rows;
   } catch (error) {
@@ -92,6 +89,8 @@ export async function fetchFilteredInvoices(
   query: string,
   currentPage: number,
 ) {
+  // await new Promise((res) => setTimeout(res, 5000))
+
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
 
   try {
@@ -125,6 +124,7 @@ export async function fetchFilteredInvoices(
 
 export async function fetchInvoicesPages(query: string) {
   try {
+    // await new Promise((res) => setTimeout(res, 5000))
     const count = await sql`SELECT COUNT(*)
     FROM invoices
     JOIN customers ON invoices.customer_id = customers.id
@@ -161,11 +161,10 @@ export async function fetchInvoiceById(id: string) {
       // Convert amount from cents to dollars
       amount: invoice.amount / 100,
     }));
-
+    
     return invoice[0];
   } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch invoice.');
+    return false
   }
 }
 
@@ -189,6 +188,7 @@ export async function fetchCustomers() {
 
 export async function fetchFilteredCustomers(query: string) {
   try {
+  //  await new Promise((res) => setTimeout(res, 3000))
     const data = await sql<CustomersTableType>`
 		SELECT
 		  customers.id,
